@@ -16,6 +16,20 @@
   .btn-outline-teal:hover { background: #0F4C4C; color: #fff; }
   .tier-card { background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
   .tab-hidden { display: none; }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 40px 20px 24px !important; }
+    #siteLogo { height: 44px !important; }
+    #headerNav a { display: none !important; }
+    #heroGrid { grid-template-columns: 1fr !important; gap: 28px !important; }
+    #heroGrid h1 { font-size: 30px !important; }
+    #offerCards { grid-template-columns: repeat(2, 1fr) !important; }
+    #howGrid { grid-template-columns: 1fr !important; }
+    #tab-item, #tab-category, #tab-service { grid-template-columns: 1fr !important; }
+    #ctaRow { flex-direction: column !important; align-items: flex-start !important; }
+    #escrowGrid { grid-template-columns: 1fr !important; padding: 28px !important; }
+    h2 { font-size: 24px !important; }
+  }
 </style>
 </head>
 <body>
@@ -24,9 +38,9 @@
 <div style="position: sticky; top: 0; z-index: 20; background: rgba(247,251,250,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(15,76,76,0.1);">
   <div style="max-width: 1160px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
     <div style="display: flex; align-items: center; cursor: pointer;" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-      <img src="logo.png" alt="Own Again" style="height: 72px; display: block;">
+      <img id="siteLogo" src="logo.png" alt="Own Again" style="height: 72px; display: block;">
     </div>
-    <div style="display: flex; align-items: center; gap: 28px;">
+    <div id="headerNav" style="display: flex; align-items: center; gap: 28px;">
       <a href="#how" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">How it works</a>
       <a href="#pricing" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Pricing</a>
       <a href="#escrow" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Escrow</a>
@@ -36,7 +50,7 @@
 </div>
 
 <!-- Hero -->
-<div class="wrap" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center;">
+<div id="heroGrid" class="wrap" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center;">
   <div>
     <div style="display: inline-block; background: rgba(20,184,166,0.12); color: #0F4C4C; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;">The easiest way to declutter</div>
     <h1 style="font-size: 48px; line-height: 1.1; font-weight: 800; margin: 0 0 20px; letter-spacing: -0.02em;">Turn your clutter into <span style="color: #14B8A6;">cash</span> — or let us handle the whole job for you.</h1>
@@ -62,7 +76,7 @@
 <div id="how" class="wrap">
   <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 10px; letter-spacing: -0.01em;">How it works</h2>
   <p style="font-size: 16px; color: rgba(15,76,76,0.65); margin: 0 0 44px; max-width: 560px;">Simple, from listing to a buyer messaging you directly.</p>
-  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+  <div id="howGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
     <div style="background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 26px 22px;">
       <div style="width: 36px; height: 36px; border-radius: 50%; background: #0F4C4C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">1</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Submit your items</div>
@@ -93,36 +107,36 @@
   <p style="font-size: 12px; color: rgba(15,76,76,0.45); margin: 0 0 32px;">All prices in KES</p>
 
   <div style="display: flex; gap: 10px; margin-bottom: 32px; flex-wrap: wrap;">
-    <button class="tabbtn" data-tab="item" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="setTab('item')">List an item</button>
-    <button class="tabbtn" data-tab="category" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="setTab('category')">Vehicle, property or business</button>
-    <button class="tabbtn" data-tab="service" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="setTab('service')">Book a service</button>
+    <button class="tabbtn" data-tab="item" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="selectTab('item')">List an item</button>
+    <button class="tabbtn" data-tab="category" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="selectTab('category')">Vehicle, property or business</button>
+    <button class="tabbtn" data-tab="service" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="selectTab('service')">Book a service</button>
   </div>
 
   <div id="tab-item" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">1 item</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">400</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Perfect for a single piece — a chair, a lamp, a bag.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">2 items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Two listings in one submission.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">3+ items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">+300 each</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">KES 300 per extra item beyond 2.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sets (sofa, dining, cosmetics, etc.)</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Covers admin review and posting for the whole set.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">1 item</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">400</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Perfect for a single piece — a chair, a lamp, a bag.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">2 items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Two listings in one submission.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">3+ items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">+300 each</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">KES 300 per extra item beyond 2.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sets (sofa, dining, cosmetics, etc.)</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Covers admin review and posting for the whole set.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
   </div>
 
   <div id="tab-category" class="tab-hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">2,500</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Get in front of buyers actively hunting for their next ride.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Motorbike</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">1,300</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Quick to list, quick to move — bikes turn around fast on our socials.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Business for sale</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">3,000</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A discreet listing that reaches serious buyers, not window shoppers.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Property (land/rent)</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">4,500</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Full details, real photos — built to attract genuine inquiries.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">2,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Get in front of buyers actively hunting for their next ride.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Motorbike</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">1,300</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Quick to list, quick to move — bikes turn around fast on our socials.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Business for sale</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">3,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A discreet listing that reaches serious buyers, not window shoppers.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Property (land/rent)</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">4,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Full details, real photos — built to attract genuine inquiries.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
   </div>
 
   <div id="tab-service" class="tab-hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Viewing & Inspecting</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Our team visits, photographs, and posts the item for you — a done-for-you listing service.</div><button class="btn-outline-teal" onclick="openServiceModal('Viewing &amp; Inspecting')">Request this</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Home organization / Declutter</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We come organize a room, wardrobe, or space in person.</div><button class="btn-outline-teal" onclick="openServiceModal('Home organization / Declutter')">Request this</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car Inspection</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">20,000</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A qualified mechanic thoroughly inspects a car before you buy.</div><button class="btn-outline-teal" onclick="openServiceModal('Car Inspection')">Request this</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Digital marketing / Meta Ads</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">800/day</div><div style="font-size: 13px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We run paid ads for your business on Meta.</div><button class="btn-outline-teal" onclick="openServiceModal('Digital marketing / Meta Ads')">Request this</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Viewing & Inspecting</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Our team visits, photographs, and posts the item for you — a done-for-you listing service.</div><button class="btn-outline-teal" onclick="openServiceModal('Viewing &amp; Inspecting')">Request this</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Home organization / Declutter</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We come organize a room, wardrobe, or space in person.</div><button class="btn-outline-teal" onclick="openServiceModal('Home organization / Declutter')">Request this</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car Inspection</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">20,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A qualified mechanic thoroughly inspects a car before you buy.</div><button class="btn-outline-teal" onclick="openServiceModal('Car Inspection')">Request this</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Digital marketing / Meta Ads</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">800/day</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We run paid ads for your business on Meta.</div><button class="btn-outline-teal" onclick="openServiceModal('Digital marketing / Meta Ads')">Request this</button></div>
   </div>
 </div>
 
 <!-- Escrow -->
 <div id="escrow" class="wrap">
-  <div style="background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center;">
+  <div id="escrowGrid" style="background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center;">
     <div>
       <div style="display: inline-block; background: rgba(20,184,166,0.12); color: #0F4C4C; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;">Buy and sell with confidence</div>
       <h2 style="font-size: 30px; font-weight: 800; margin: 0 0 14px; letter-spacing: -0.01em;">Escrow</h2>
@@ -142,7 +156,7 @@
 
 <!-- CTA banner -->
 <div style="background: #0F4C4C; padding: 64px 28px;">
-  <div style="max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+  <div id="ctaRow" style="max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
     <div>
       <div style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 8px;">Got something to sell, or a job to hand off?</div>
       <div style="font-size: 15px; color: rgba(255,255,255,0.7);">Listing takes just a few minutes. Services are booked in a couple of clicks.</div>
@@ -194,10 +208,10 @@ offerCards.forEach(c => {
   a.style.cssText = 'text-decoration: none; color: inherit; background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer;';
   a.onmouseover = () => { a.style.borderColor = '#14B8A6'; };
   a.onmouseout = () => { a.style.borderColor = 'rgba(15,76,76,0.08)'; };
-  a.onclick = () => setTab(c.tab);
+  a.onclick = () => selectTab(c.tab);
   a.innerHTML = `<div style="width:128px;height:128px;border-radius:22px;background:rgba(20,184,166,0.12);background-image:url(${c.icon});background-size:187px 187px;background-position:center;background-repeat:no-repeat;"></div>
     <div style="font-size:14px;font-weight:700;line-height:1.3;">${c.label}</div>
-    <div style="font-size:12px;color:rgba(15,76,76,0.6);line-height:1.4;">${c.desc}</div>`;
+    <div style="font-size:13px;color:rgba(15,76,76,0.6);line-height:1.4;">${c.desc}</div>`;
   offerContainer.appendChild(a);
 });
 
@@ -209,14 +223,17 @@ function styleTabButtons(active) {
     btn.style.border = isActive ? '2px solid #0F4C4C' : '2px solid rgba(15,76,76,0.15)';
   });
 }
-function setTab(tab) {
+function showTab(tab) {
   document.getElementById('tab-item').style.display = tab === 'item' ? 'grid' : 'none';
   document.getElementById('tab-category').style.display = tab === 'category' ? 'grid' : 'none';
   document.getElementById('tab-service').style.display = tab === 'service' ? 'grid' : 'none';
   styleTabButtons(tab);
+}
+function selectTab(tab) {
+  showTab(tab);
   document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
 }
-setTab('item');
+showTab('item');
 
 function openServiceModal(name) {
   document.getElementById('modalServiceName').textContent = name;
