@@ -29,14 +29,67 @@
     .wrap { padding: 40px 20px 24px !important; }
     #siteLogo { height: 44px !important; }
     #headerNav a { display: none !important; }
-    #heroGrid { grid-template-columns: 1fr !important; gap: 28px !important; }
-    #heroGrid h1 { font-size: 30px !important; }
-    #offerCards { grid-template-columns: repeat(2, 1fr) !important; }
+    #headerNav { gap: 14px !important; }
+
+    /* Hamburger + slide-down panel, hidden on desktop by inline display:none */
+    #mobileMenuBtn { display: flex !important; }
+    #mobileNavPanel.open { display: flex !important; }
+
+    /* Hero: tighten vertical spacing so the Instagram preview row clears
+       the viewport without extra scrolling */
+    #heroGrid.wrap { padding-top: 24px !important; }
+    #heroGrid { grid-template-columns: 1fr !important; gap: 16px !important; }
+    #heroGrid h1 { font-size: 30px !important; margin-bottom: 14px !important; }
+    #heroGrid p { margin-bottom: 18px !important; }
+    #heroGrid > div:first-child > div:first-child { margin-bottom: 12px !important; }
+
+    /* What we offer: horizontal swipeable row with next-card peek */
+    #offerCards {
+      display: flex !important;
+      grid-template-columns: none !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      gap: 14px !important;
+      margin: 0 -20px !important;
+      padding: 4px 20px 14px !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #offerCards::-webkit-scrollbar { display: none; }
+    #offerCards > a { flex: 0 0 76% !important; scroll-snap-align: start !important; }
+
     #howGrid { grid-template-columns: 1fr !important; }
-    #tab-item, #tab-category, #tab-service { grid-template-columns: 1fr !important; }
+
+    /* Pricing cards: horizontal swipeable row within each tab (uses
+       grid-auto-flow so it doesn't fight showTab()'s inline display toggle) */
+    #tab-item, #tab-category, #tab-service {
+      grid-template-columns: none !important;
+      grid-auto-flow: column !important;
+      grid-auto-columns: 80% !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      gap: 14px !important;
+      margin: 0 -20px !important;
+      padding: 4px 20px 14px !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #tab-item::-webkit-scrollbar, #tab-category::-webkit-scrollbar, #tab-service::-webkit-scrollbar { display: none; }
+    #tab-item .tier-card, #tab-category .tier-card, #tab-service .tier-card {
+      scroll-snap-align: start !important;
+      min-width: 0 !important;
+    }
+
     #ctaRow { flex-direction: column !important; align-items: flex-start !important; }
     #escrowGrid { grid-template-columns: 1fr !important; padding: 28px !important; }
     h2 { font-size: 24px !important; }
+
+    /* Subtle alternating tint so sections read as distinct blocks */
+    #offer { background: #FFFFFF !important; }
+    #how { background: #EEF5F4 !important; }
+    #pricing { background: #FFFFFF !important; }
+    #escrow { background: #EEF5F4 !important; }
+    #siteFooter { background: #FFFFFF !important; }
   }
 </style>
 </head>
@@ -53,8 +106,17 @@
       <a href="#pricing" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Pricing</a>
       <a href="#escrow" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Escrow</a>
       <button onclick="goSell()" style="background: #14B8A6; color: #fff; border: none; padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#0F4C4C'" onmouseout="this.style.background='#14B8A6'">List something</button>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Menu" aria-expanded="false" style="display: none; align-items: center; justify-content: center; background: none; border: none; padding: 6px; cursor: pointer; color: #0F4C4C; font-size: 22px; line-height: 1;">&#9776;</button>
     </div>
   </div>
+</div>
+
+<!-- Mobile nav panel (hidden on desktop; only shown via #mobileNavPanel.open in the mobile media query) -->
+<div id="mobileNavPanel" style="display: none; position: fixed; top: 77px; left: 0; right: 0; z-index: 19; background: #F7FBFA; border-bottom: 1px solid rgba(15,76,76,0.1); box-shadow: 0 12px 24px rgba(15,76,76,0.12); flex-direction: column; padding: 8px 20px 16px;">
+  <a href="#offer" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px; border-bottom: 1px solid rgba(15,76,76,0.08);">What we offer</a>
+  <a href="#how" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px; border-bottom: 1px solid rgba(15,76,76,0.08);">How it works</a>
+  <a href="#pricing" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px; border-bottom: 1px solid rgba(15,76,76,0.08);">Pricing</a>
+  <a href="#escrow" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px;">Escrow</a>
 </div>
 
 <!-- Hero -->
@@ -174,7 +236,7 @@
 </div>
 
 <!-- Footer -->
-<div style="padding: 40px 28px; max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+<div id="siteFooter" style="padding: 40px 28px; max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
   <img src="logo.png" alt="Own Again" style="height: 20px; display: block;">
   <span style="font-size: 13px; color: rgba(15,76,76,0.5);">hello@ownagain.co.ke</span>
 </div>
@@ -201,6 +263,20 @@
 
 <script>
 function goSell() { window.location.href = 'https://own-again.vercel.app/submit'; }
+
+function toggleMobileMenu() {
+  const panel = document.getElementById('mobileNavPanel');
+  const btn = document.getElementById('mobileMenuBtn');
+  const isOpen = panel.classList.toggle('open');
+  btn.innerHTML = isOpen ? '&#10005;' : '&#9776;';
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+function closeMobileMenu() {
+  document.getElementById('mobileNavPanel').classList.remove('open');
+  const btn = document.getElementById('mobileMenuBtn');
+  btn.innerHTML = '&#9776;';
+  btn.setAttribute('aria-expanded', 'false');
+}
 
 const offerCards = [
   { icon: 'icon-list-items.png', label: 'Items & sets', desc: 'List single pieces or full sets for sale.', tab: 'item' },
