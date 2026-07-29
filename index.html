@@ -17,7 +17,15 @@
   .tier-card { background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
   .tab-hidden { display: none; }
 
+  /* Sticky header is 105px tall (72px logo + 16px top/bottom padding + 1px
+     border) at desktop widths — offsets every anchor-jump/scrollIntoView
+     target so its title clears the header instead of landing underneath
+     it. Mobile override (77px, matching the 44px logo at the 760px
+     breakpoint) is set below. */
+  #offer, #how, #pricing, #escrow { scroll-margin-top: 105px; }
+
   @media (max-width: 760px) {
+    #offer, #how, #pricing, #escrow { scroll-margin-top: 77px; }
     .wrap { padding: 40px 20px 24px !important; }
     #siteLogo { height: 44px !important; }
     #headerNav a { display: none !important; }
