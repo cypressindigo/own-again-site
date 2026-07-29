@@ -17,6 +17,14 @@
   .tier-card { background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
   .tab-hidden { display: none; }
 
+  /* One consolidated CTA per pricing tab (desktop and mobile alike, replacing
+     the old per-item buttons). Each button is the tab's next sibling in the
+     DOM; this attribute selector keeps it synced to whichever tab showTab()
+     currently has set to display:none, so only the active tab's CTA shows. */
+  #tab-item[style*="display: none"] + #tabCta-item,
+  #tab-category[style*="display: none"] + #tabCta-category,
+  #tab-service[style*="display: none"] + #tabCta-service { display: none !important; }
+
   /* Sticky header is 105px tall (72px logo + 16px top/bottom padding + 1px
      border) at desktop widths — offsets every anchor-jump/scrollIntoView
      target so its title clears the header instead of landing underneath
@@ -36,12 +44,21 @@
     #mobileNavPanel.open { display: flex !important; }
 
     /* Hero: tighten vertical spacing so the Instagram preview row clears
-       the viewport without extra scrolling */
+       the viewport without extra scrolling, AND reposition the image
+       between the headline and paragraph. The two wrapper divs get
+       display:contents so their children (badge/h1/p/CTAs and the img)
+       become flat siblings inside #heroGrid's grid — that's what lets
+       `order` place the image mid-flow without moving anything in the
+       DOM or duplicating markup. This is inside the media query only,
+       so desktop's 2-column grid never sees display:contents. */
     #heroGrid.wrap { padding-top: 24px !important; }
-    #heroGrid { grid-template-columns: 1fr !important; gap: 16px !important; }
-    #heroGrid h1 { font-size: 30px !important; margin-bottom: 14px !important; }
-    #heroGrid p { margin-bottom: 18px !important; }
-    #heroGrid > div:first-child > div:first-child { margin-bottom: 12px !important; }
+    #heroGrid { grid-template-columns: 1fr !important; gap: 0 !important; }
+    #heroGrid > div:first-child, #heroGrid > div:last-child { display: contents !important; }
+    #heroGrid > div:first-child > div:first-child { order: 1 !important; margin-bottom: 12px !important; } /* badge */
+    #heroGrid h1 { order: 2 !important; font-size: 30px !important; margin-bottom: 14px !important; }
+    #heroGrid > div:last-child > img { order: 3 !important; margin-bottom: 18px !important; }
+    #heroGrid p { order: 4 !important; margin-bottom: 18px !important; }
+    #heroGrid > div:first-child > div:last-child { order: 5 !important; } /* CTA button row */
 
     /* What we offer: 2-column grid, no horizontal scroll. 5 cards means the
        last row has a lone odd card — intentional, no placeholder added. */
@@ -102,35 +119,43 @@
     #howGrid > div > div:nth-child(2) { grid-area: title; margin-bottom: 0 !important; }
     #howGrid > div > div:nth-child(3) { grid-area: desc; }
 
-    /* Pricing cards: horizontal swipeable row within each tab (uses
-       grid-auto-flow so it doesn't fight showTab()'s inline display toggle).
-       42% column width shows ~2.3 cards at once instead of ~1.2. */
+    /* Pricing: vertical list instead of a card carousel. Each row pairs
+       name + price on one line (CSS grid areas) with the description
+       below, and the per-item button is hidden — one consolidated CTA
+       per tab is added after the list instead. That button is the tab's
+       next sibling in the DOM, and this attribute selector keeps its
+       visibility synced to whichever tab showTab() currently has set to
+       display:none (same trick the old dot indicators used). */
     #tab-item, #tab-category, #tab-service {
-      grid-template-columns: none !important;
-      grid-auto-flow: column !important;
-      grid-auto-columns: 42% !important;
-      overflow-x: auto !important;
-      scroll-snap-type: x mandatory !important;
-      gap: 14px !important;
-      margin: 0 -20px !important;
-      padding: 4px 20px 14px !important;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
     }
-    #tab-item::-webkit-scrollbar, #tab-category::-webkit-scrollbar, #tab-service::-webkit-scrollbar { display: none; }
     #tab-item .tier-card, #tab-category .tier-card, #tab-service .tier-card {
-      scroll-snap-align: start !important;
-      min-width: 0 !important;
-      padding: 18px 14px !important;
+      display: grid !important;
+      grid-template-columns: 1fr auto !important;
+      grid-template-areas: "name price" "desc desc" !important;
+      align-items: baseline !important;
+      column-gap: 10px !important;
+      row-gap: 4px !important;
+      padding: 14px 16px !important;
+      border-radius: 12px !important;
+    }
+    #tab-item .tier-card > div:nth-child(1), #tab-category .tier-card > div:nth-child(1), #tab-service .tier-card > div:nth-child(1) {
+      grid-area: name !important; margin-bottom: 0 !important; font-size: 15px !important;
+    }
+    #tab-item .tier-card > div:nth-child(2), #tab-category .tier-card > div:nth-child(2), #tab-service .tier-card > div:nth-child(2) {
+      grid-area: price !important; margin-bottom: 0 !important; font-size: 17px !important; text-align: right !important; white-space: nowrap !important;
+    }
+    #tab-item .tier-card > div:nth-child(3), #tab-category .tier-card > div:nth-child(3), #tab-service .tier-card > div:nth-child(3) {
+      grid-area: desc !important; margin-bottom: 0 !important; flex: none !important; font-size: 13px !important;
     }
 
-    /* Carousel dot indicators: hidden on desktop by inline display:none,
-       shown here, and hidden again whenever their tab sibling is the one
-       showTab() has set to display:none. */
-    #dots-item, #dots-category, #dots-service { display: flex !important; }
-    #tab-item[style*="display: none"] + #dots-item,
-    #tab-category[style*="display: none"] + #dots-category,
-    #tab-service[style*="display: none"] + #dots-service { display: none !important; }
+    /* The one-per-tab CTA (#tabCta-*) is visible on desktop by default (see
+       base-level rule near the buttons themselves); this just restyles it
+       into a full-width block for the mobile list. Show/hide sync with the
+       active tab is handled by the base-level attribute selector above the
+       media query, so it isn't repeated here. */
+    #tabCta-item, #tabCta-category, #tabCta-service { display: block !important; width: 100% !important; margin-top: 14px !important; }
 
     #ctaRow { flex-direction: column !important; align-items: flex-start !important; }
     #escrowGrid { grid-template-columns: 1fr !important; padding: 28px !important; }
@@ -236,25 +261,28 @@
   </div>
 
   <div id="tab-item" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">1 item</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">400</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Perfect for a single piece — a chair, a lamp, a bag.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">2 items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Two listings in one submission.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">3+ items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">+300 each</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">KES 300 per extra item beyond 2.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sets (sofa, dining, cosmetics, etc.)</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Covers admin review and posting for the whole set.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">1 item</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">400</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Perfect for a single piece — a chair, a lamp, a bag.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">2 items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Two listings in one submission.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">3+ items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">+300 each</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">KES 300 per extra item beyond 2.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sets</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Covers a sofa, dining set, cosmetics or any other set — one fee for the lot.</div></div>
   </div>
+  <button id="tabCta-item" class="btn-solid-teal" onclick="goSell()" style="margin-top: 24px;">List Now</button>
 
   <div id="tab-category" class="tab-hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">2,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Get in front of buyers actively hunting for their next ride.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Motorbike</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">1,300</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Quick to list, quick to move — bikes turn around fast on our socials.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Business for sale</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">3,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A discreet listing that reaches serious buyers, not window shoppers.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Property (land/rent)</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">4,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Full details, real photos — built to attract genuine inquiries.</div><button class="btn-outline-teal" onclick="goSell()">List Now</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">2,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Get in front of buyers actively hunting for their next ride.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Motorbike</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">1,300</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Quick to list, quick to move — bikes turn around fast on our socials.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Business</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">3,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A discreet listing for a business that's for sale — reaches serious buyers, not window shoppers.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Property</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">4,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">For land or a house to rent — full details and real photos to attract genuine inquiries.</div></div>
   </div>
+  <button id="tabCta-category" class="btn-solid-teal" onclick="goSell()" style="margin-top: 24px;">List Now</button>
 
   <div id="tab-service" class="tab-hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Viewing & Inspecting</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Our team visits, photographs, and posts the item for you — a done-for-you listing service.</div><button class="btn-outline-teal" onclick="openServiceModal('Viewing &amp; Inspecting')">Request this</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Home organization / Declutter</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We come organize a room, wardrobe, or space in person.</div><button class="btn-outline-teal" onclick="openServiceModal('Home organization / Declutter')">Request this</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car Inspection</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">20,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A qualified mechanic thoroughly inspects a car before you buy.</div><button class="btn-outline-teal" onclick="openServiceModal('Car Inspection')">Request this</button></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Digital marketing / Meta Ads</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">800/day</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We run paid ads for your business on Meta.</div><button class="btn-outline-teal" onclick="openServiceModal('Digital marketing / Meta Ads')">Request this</button></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Viewing & Inspecting</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Our team visits, photographs, and posts the item for you — a done-for-you listing service.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Home Organization</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We come organize a room, wardrobe, or space in person.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car Inspection</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">20,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A qualified mechanic thoroughly inspects a car before you buy.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Digital Marketing</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">800/day</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We run paid ads for your business on Meta.</div></div>
   </div>
+  <button id="tabCta-service" class="btn-solid-teal" onclick="openServiceModal('Book a service')" style="margin-top: 24px;">Make a Request</button>
 </div>
 
 <!-- Escrow -->
@@ -272,7 +300,7 @@
       <div style="font-size: 28px; font-weight: 800; color: #E2664D;">KES 2,000 <span style="font-size: 14px; font-weight: 600; color: rgba(15,76,76,0.5);">per transaction</span></div>
     </div>
     <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px;">
-      <button class="btn-outline-teal" style="padding: 14px 26px; font-size: 15px;" onclick="openServiceModal('Escrow')">Request this</button>
+      <button class="btn-outline-teal" style="padding: 14px 26px; font-size: 15px;" onclick="openServiceModal('Escrow')">Make a Request</button>
     </div>
   </div>
 </div>
@@ -297,9 +325,18 @@
 <!-- Service request modal -->
 <div id="modalBackdrop" style="display: none; position: fixed; inset: 0; background: rgba(15,76,76,0.45); align-items: center; justify-content: center; z-index: 50; padding: 20px;" onclick="closeServiceModal(event)">
   <div style="background: #fff; border-radius: 18px; padding: 28px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(15,76,76,0.3);" onclick="event.stopPropagation()">
-    <div style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">Request: <span id="modalServiceName"></span></div>
+    <div style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">Make a Request</div>
     <div style="font-size: 14px; color: rgba(15,76,76,0.6); margin-bottom: 22px;">We'll reach out to confirm details.</div>
 
+    <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Service</label>
+    <select id="reqService" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(15,76,76,0.18); font-size: 15px; margin-bottom: 14px; color: #0F4C4C; font-family: inherit; background: #fff;">
+      <option value="" disabled>Select a service</option>
+      <option value="Viewing &amp; Inspecting">Viewing &amp; Inspecting</option>
+      <option value="Home Organization">Home Organization</option>
+      <option value="Car Inspection">Car Inspection</option>
+      <option value="Digital Marketing">Digital Marketing</option>
+      <option value="Escrow">Escrow</option>
+    </select>
     <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Name</label>
     <input id="reqName" placeholder="Your name" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(15,76,76,0.18); font-size: 15px; margin-bottom: 14px; color: #0F4C4C;">
     <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Phone number</label>
@@ -372,41 +409,10 @@ function selectTab(tab) {
 }
 showTab('item');
 
-function setupCarouselDots(containerId, dotsId) {
-  const container = document.getElementById(containerId);
-  const cards = Array.from(container.querySelectorAll('.tier-card'));
-  if (!cards.length) return;
-  const dotsWrap = document.createElement('div');
-  dotsWrap.id = dotsId;
-  dotsWrap.style.cssText = 'display: none; justify-content: center; align-items: center; gap: 8px; padding-top: 12px;';
-  cards.forEach((_, i) => {
-    const dot = document.createElement('span');
-    dot.style.cssText = 'width: 7px; height: 7px; border-radius: 50%; background: ' + (i === 0 ? '#0F4C4C' : 'rgba(15,76,76,0.2)') + '; transition: background 0.2s;';
-    dotsWrap.appendChild(dot);
-  });
-  container.insertAdjacentElement('afterend', dotsWrap);
-
-  let ticking = false;
-  container.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const gap = 14;
-      const cardWidth = cards[0].getBoundingClientRect().width;
-      const active = Math.max(0, Math.min(cards.length - 1, Math.round(container.scrollLeft / (cardWidth + gap))));
-      Array.from(dotsWrap.children).forEach((dot, i) => {
-        dot.style.background = i === active ? '#0F4C4C' : 'rgba(15,76,76,0.2)';
-      });
-      ticking = false;
-    });
-  });
-}
-setupCarouselDots('tab-item', 'dots-item');
-setupCarouselDots('tab-category', 'dots-category');
-setupCarouselDots('tab-service', 'dots-service');
-
 function openServiceModal(name) {
-  document.getElementById('modalServiceName').textContent = name;
+  const serviceSelect = document.getElementById('reqService');
+  const knownServices = Array.from(serviceSelect.options).map(o => o.value).filter(Boolean);
+  serviceSelect.value = knownServices.includes(name) ? name : '';
   document.getElementById('reqName').value = '';
   document.getElementById('reqPhone').value = '';
   document.getElementById('reqNotes').value = '';
