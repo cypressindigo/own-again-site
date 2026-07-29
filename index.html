@@ -43,29 +43,72 @@
     #heroGrid p { margin-bottom: 18px !important; }
     #heroGrid > div:first-child > div:first-child { margin-bottom: 12px !important; }
 
-    /* What we offer: horizontal swipeable row with next-card peek */
+    /* What we offer: 2-column grid, no horizontal scroll. 5 cards means the
+       last row has a lone odd card — intentional, no placeholder added. */
     #offerCards {
-      display: flex !important;
-      grid-template-columns: none !important;
-      overflow-x: auto !important;
-      scroll-snap-type: x mandatory !important;
-      gap: 14px !important;
-      margin: 0 -20px !important;
-      padding: 4px 20px 14px !important;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 10px !important;
     }
-    #offerCards::-webkit-scrollbar { display: none; }
-    #offerCards > a { flex: 0 0 76% !important; scroll-snap-align: start !important; }
+    #offerCards > a { padding: 16px 10px !important; gap: 8px !important; }
+    #offerCards > a > div:nth-child(1) {
+      width: 84px !important;
+      height: 84px !important;
+      border-radius: 16px !important;
+      background-size: 123px 123px !important;
+    }
+    #offerCards > a > div:nth-child(2) { font-size: 12.5px !important; }
+    #offerCards > a > div:nth-child(3) { font-size: 11px !important; }
 
-    #howGrid { grid-template-columns: 1fr !important; }
+    /* How it works: compact vertical timeline instead of stacked full cards.
+       Badge + title share a row, description sits below; a connecting line
+       runs behind the badges. See comment above the line's ::before rule
+       for how it stays anchored to each badge without JS. */
+    #howGrid { grid-template-columns: 1fr !important; gap: 10px !important; }
+    #howGrid > div {
+      display: grid !important;
+      grid-template-columns: 28px 1fr !important;
+      grid-template-areas: "badge title" ". desc" !important;
+      column-gap: 10px !important;
+      row-gap: 4px !important;
+      align-items: center !important;
+      padding: 14px 16px !important;
+      position: relative !important;
+    }
+    /* Line spans from this card's own badge center (top: 28px = 14px
+       padding-top + half of the 28px badge) down past this card's own
+       height (100%, whatever it ends up being) plus the 10px grid gap —
+       landing exactly on the next card's badge center, since every card
+       shares the same 28px top-offset. Skipped on the last card since
+       there's no next badge to reach. */
+    #howGrid > div:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 30px;
+      top: 28px;
+      width: 2px;
+      height: calc(100% + 10px);
+      background: rgba(15,76,76,0.15);
+      z-index: 0;
+    }
+    #howGrid > div > div:nth-child(1) {
+      grid-area: badge;
+      width: 28px !important;
+      height: 28px !important;
+      font-size: 13px !important;
+      margin-bottom: 0 !important;
+      position: relative !important;
+      z-index: 1 !important;
+    }
+    #howGrid > div > div:nth-child(2) { grid-area: title; margin-bottom: 0 !important; }
+    #howGrid > div > div:nth-child(3) { grid-area: desc; }
 
     /* Pricing cards: horizontal swipeable row within each tab (uses
-       grid-auto-flow so it doesn't fight showTab()'s inline display toggle) */
+       grid-auto-flow so it doesn't fight showTab()'s inline display toggle).
+       42% column width shows ~2.3 cards at once instead of ~1.2. */
     #tab-item, #tab-category, #tab-service {
       grid-template-columns: none !important;
       grid-auto-flow: column !important;
-      grid-auto-columns: 80% !important;
+      grid-auto-columns: 42% !important;
       overflow-x: auto !important;
       scroll-snap-type: x mandatory !important;
       gap: 14px !important;
@@ -78,7 +121,16 @@
     #tab-item .tier-card, #tab-category .tier-card, #tab-service .tier-card {
       scroll-snap-align: start !important;
       min-width: 0 !important;
+      padding: 18px 14px !important;
     }
+
+    /* Carousel dot indicators: hidden on desktop by inline display:none,
+       shown here, and hidden again whenever their tab sibling is the one
+       showTab() has set to display:none. */
+    #dots-item, #dots-category, #dots-service { display: flex !important; }
+    #tab-item[style*="display: none"] + #dots-item,
+    #tab-category[style*="display: none"] + #dots-category,
+    #tab-service[style*="display: none"] + #dots-service { display: none !important; }
 
     #ctaRow { flex-direction: column !important; align-items: flex-start !important; }
     #escrowGrid { grid-template-columns: 1fr !important; padding: 28px !important; }
@@ -102,6 +154,7 @@
       <img id="siteLogo" src="logo.png" alt="Own Again" style="height: 72px; display: block;">
     </div>
     <div id="headerNav" style="display: flex; align-items: center; gap: 28px;">
+      <a href="#offer" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">What we offer</a>
       <a href="#how" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">How it works</a>
       <a href="#pricing" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Pricing</a>
       <a href="#escrow" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Escrow</a>
@@ -318,6 +371,39 @@ function selectTab(tab) {
   document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
 }
 showTab('item');
+
+function setupCarouselDots(containerId, dotsId) {
+  const container = document.getElementById(containerId);
+  const cards = Array.from(container.querySelectorAll('.tier-card'));
+  if (!cards.length) return;
+  const dotsWrap = document.createElement('div');
+  dotsWrap.id = dotsId;
+  dotsWrap.style.cssText = 'display: none; justify-content: center; align-items: center; gap: 8px; padding-top: 12px;';
+  cards.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.style.cssText = 'width: 7px; height: 7px; border-radius: 50%; background: ' + (i === 0 ? '#0F4C4C' : 'rgba(15,76,76,0.2)') + '; transition: background 0.2s;';
+    dotsWrap.appendChild(dot);
+  });
+  container.insertAdjacentElement('afterend', dotsWrap);
+
+  let ticking = false;
+  container.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const gap = 14;
+      const cardWidth = cards[0].getBoundingClientRect().width;
+      const active = Math.max(0, Math.min(cards.length - 1, Math.round(container.scrollLeft / (cardWidth + gap))));
+      Array.from(dotsWrap.children).forEach((dot, i) => {
+        dot.style.background = i === active ? '#0F4C4C' : 'rgba(15,76,76,0.2)';
+      });
+      ticking = false;
+    });
+  });
+}
+setupCarouselDots('tab-item', 'dots-item');
+setupCarouselDots('tab-category', 'dots-category');
+setupCarouselDots('tab-service', 'dots-service');
 
 function openServiceModal(name) {
   document.getElementById('modalServiceName').textContent = name;
