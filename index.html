@@ -5,16 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Own Again</title>
 <style>
+  :root {
+    --color-text: #3B2A1F;       /* Espresso — body text, links */
+    --color-brand: #A47C5B;      /* Nude Brown — buttons, brand elements, badges */
+    --color-bg: #F3EBDD;         /* Oat — page background */
+    --color-tint: #F0E4D6;       /* light wash — replaces old #EEF5F4 section tint */
+    --color-text-rgb: 59, 42, 31;    /* Espresso channels, for rgba(var(--color-text-rgb), X) */
+    --color-brand-rgb: 164, 124, 91; /* Nude Brown channels, for rgba(var(--color-brand-rgb), X) */
+    --color-bg-rgb: 243, 235, 221;   /* Oat channels, for the translucent sticky header */
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; background: #F7FBFA; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: #0F4C4C; }
-  a { color: #0F4C4C; }
-  input::placeholder, textarea::placeholder { color: rgba(15,76,76,0.38); }
+  body { margin: 0; background: var(--color-bg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: var(--color-text); }
+  a { color: var(--color-text); }
+  input::placeholder, textarea::placeholder { color: rgba(var(--color-text-rgb),0.38); }
   .wrap { max-width: 1160px; margin: 0 auto; padding: 72px 28px 40px; }
-  .btn-solid-teal { background: #0F4C4C; color: #fff; border: none; padding: 16px 28px; border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer; }
-  .btn-solid-teal:hover { background: #14B8A6; }
-  .btn-outline-teal { background: none; color: #0F4C4C; border: 2px solid #0F4C4C; padding: 10px 22px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; }
-  .btn-outline-teal:hover { background: #0F4C4C; color: #fff; }
-  .tier-card { background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
+  .btn-solid-teal { background: var(--color-brand); color: #fff; border: none; padding: 16px 28px; border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .btn-solid-teal:hover { background: var(--color-brand); }
+  .btn-outline-teal { background: none; color: var(--color-brand); border: 2px solid var(--color-brand); padding: 10px 22px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .btn-outline-teal:hover { background: var(--color-brand); color: #fff; }
+  .tier-card { background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
   .tab-hidden { display: none; }
 
   /* One consolidated CTA per pricing tab (desktop and mobile alike, replacing
@@ -104,7 +113,7 @@
       top: 28px;
       width: 2px;
       height: calc(100% + 10px);
-      background: rgba(15,76,76,0.15);
+      background: rgba(var(--color-text-rgb),0.15);
       z-index: 0;
     }
     #howGrid > div > div:nth-child(1) {
@@ -163,9 +172,9 @@
 
     /* Subtle alternating tint so sections read as distinct blocks */
     #offer { background: #FFFFFF !important; }
-    #how { background: #EEF5F4 !important; }
+    #how { background: var(--color-tint) !important; }
     #pricing { background: #FFFFFF !important; }
-    #escrow { background: #EEF5F4 !important; }
+    #escrow { background: var(--color-tint) !important; }
     #siteFooter { background: #FFFFFF !important; }
   }
 </style>
@@ -173,39 +182,39 @@
 <body>
 
 <!-- Header -->
-<div style="position: sticky; top: 0; z-index: 20; background: rgba(247,251,250,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(15,76,76,0.1);">
+<div style="position: sticky; top: 0; z-index: 20; background: rgba(var(--color-bg-rgb),0.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(var(--color-text-rgb),0.1);">
   <div style="max-width: 1160px; margin: 0 auto; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
     <div style="display: flex; align-items: center; cursor: pointer;" onclick="window.scrollTo({top:0,behavior:'smooth'})">
       <img id="siteLogo" src="logo.png" alt="Own Again" style="height: 72px; display: block;">
     </div>
     <div id="headerNav" style="display: flex; align-items: center; gap: 28px;">
-      <a href="#offer" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">What we offer</a>
-      <a href="#how" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">How it works</a>
-      <a href="#pricing" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Pricing</a>
-      <a href="#escrow" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(15,76,76,0.75);">Escrow</a>
-      <button onclick="goSell()" style="background: #14B8A6; color: #fff; border: none; padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#0F4C4C'" onmouseout="this.style.background='#14B8A6'">List something</button>
-      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Menu" aria-expanded="false" style="display: none; align-items: center; justify-content: center; background: none; border: none; padding: 6px; cursor: pointer; color: #0F4C4C; font-size: 22px; line-height: 1;">&#9776;</button>
+      <a href="#offer" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(var(--color-text-rgb),0.75);">What we offer</a>
+      <a href="#how" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(var(--color-text-rgb),0.75);">How it works</a>
+      <a href="#pricing" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(var(--color-text-rgb),0.75);">Pricing</a>
+      <a href="#escrow" style="text-decoration: none; font-size: 15px; font-weight: 500; color: rgba(var(--color-text-rgb),0.75);">Escrow</a>
+      <button onclick="goSell()" style="background: var(--color-brand); color: #fff; border: none; padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='var(--color-text)'" onmouseout="this.style.background='var(--color-brand)'">List something</button>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Menu" aria-expanded="false" style="display: none; align-items: center; justify-content: center; background: none; border: none; padding: 6px; cursor: pointer; color: var(--color-text); font-size: 22px; line-height: 1;">&#9776;</button>
     </div>
   </div>
 </div>
 
 <!-- Mobile nav panel (hidden on desktop; only shown via #mobileNavPanel.open in the mobile media query) -->
-<div id="mobileNavPanel" style="display: none; position: fixed; top: 77px; left: 0; right: 0; z-index: 19; background: #F7FBFA; border-bottom: 1px solid rgba(15,76,76,0.1); box-shadow: 0 12px 24px rgba(15,76,76,0.12); flex-direction: column; padding: 8px 20px 16px;">
-  <a href="#offer" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px; border-bottom: 1px solid rgba(15,76,76,0.08);">What we offer</a>
-  <a href="#how" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px; border-bottom: 1px solid rgba(15,76,76,0.08);">How it works</a>
-  <a href="#pricing" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px; border-bottom: 1px solid rgba(15,76,76,0.08);">Pricing</a>
-  <a href="#escrow" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: #0F4C4C; padding: 14px 4px;">Escrow</a>
+<div id="mobileNavPanel" style="display: none; position: fixed; top: 77px; left: 0; right: 0; z-index: 19; background: var(--color-bg); border-bottom: 1px solid rgba(var(--color-text-rgb),0.1); box-shadow: 0 12px 24px rgba(var(--color-text-rgb),0.12); flex-direction: column; padding: 8px 20px 16px;">
+  <a href="#offer" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: var(--color-text); padding: 14px 4px; border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);">What we offer</a>
+  <a href="#how" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: var(--color-text); padding: 14px 4px; border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);">How it works</a>
+  <a href="#pricing" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: var(--color-text); padding: 14px 4px; border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);">Pricing</a>
+  <a href="#escrow" onclick="closeMobileMenu()" style="text-decoration: none; font-size: 16px; font-weight: 600; color: var(--color-text); padding: 14px 4px;">Escrow</a>
 </div>
 
 <!-- Hero -->
 <div id="heroGrid" class="wrap" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center;">
   <div>
-    <div style="display: inline-block; background: rgba(20,184,166,0.12); color: #0F4C4C; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;">The easiest way to declutter</div>
-    <h1 style="font-size: 48px; line-height: 1.1; font-weight: 800; margin: 0 0 20px; letter-spacing: -0.02em;">Turn your clutter into <span style="color: #14B8A6;">cash</span> — or let us handle the whole job for you.</h1>
-    <p style="font-size: 18px; line-height: 1.6; color: rgba(15,76,76,0.7); margin: 0 0 32px; max-width: 480px;">List items, vehicles or property yourself and we post them to Instagram, TikTok and Facebook — or book our team to inspect, organize or market it for you.</p>
+    <div style="display: inline-block; background: rgba(var(--color-brand-rgb),0.12); color: var(--color-text); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;">The easiest way to declutter</div>
+    <h1 style="font-size: 48px; line-height: 1.1; font-weight: 800; margin: 0 0 20px; letter-spacing: -0.02em;">Turn your clutter into <span style="color: var(--color-brand);">cash</span> — or let us handle the whole job for you.</h1>
+    <p style="font-size: 18px; line-height: 1.6; color: rgba(var(--color-text-rgb),0.7); margin: 0 0 32px; max-width: 480px;">List items, vehicles or property yourself and we post them to Instagram, TikTok and Facebook — or book our team to inspect, organize or market it for you.</p>
     <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
       <button class="btn-solid-teal" onclick="goSell()">List something →</button>
-      <a href="#offer" style="text-decoration: none; font-size: 16px; font-weight: 700; color: #0F4C4C; border: 2px solid #0F4C4C; padding: 14px 26px; border-radius: 999px;" onmouseover="this.style.background='#0F4C4C'; this.style.color='#fff'" onmouseout="this.style.background=''; this.style.color='#0F4C4C'">See our services</a>
+      <a href="#offer" style="text-decoration: none; font-size: 16px; font-weight: 700; color: var(--color-brand); border: 2px solid var(--color-brand); padding: 14px 26px; border-radius: 999px;" onmouseover="this.style.background='var(--color-brand)'; this.style.color='#fff'" onmouseout="this.style.background=''; this.style.color='var(--color-brand)'">See our services</a>
     </div>
   </div>
   <div>
@@ -216,34 +225,34 @@
 <!-- What we offer -->
 <div id="offer" class="wrap">
   <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 10px; letter-spacing: -0.01em;">What we offer</h2>
-  <p style="font-size: 16px; color: rgba(15,76,76,0.65); margin: 0 0 32px; max-width: 560px;">From a single item to a whole property — self-serve listings or a done-for-you service.</p>
+  <p style="font-size: 16px; color: rgba(var(--color-text-rgb),0.65); margin: 0 0 32px; max-width: 560px;">From a single item to a whole property — self-serve listings or a done-for-you service.</p>
   <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;" id="offerCards"></div>
 </div>
 
 <!-- How it works -->
 <div id="how" class="wrap">
   <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 10px; letter-spacing: -0.01em;">How it works</h2>
-  <p style="font-size: 16px; color: rgba(15,76,76,0.65); margin: 0 0 44px; max-width: 560px;">Simple, from listing to a buyer messaging you directly.</p>
+  <p style="font-size: 16px; color: rgba(var(--color-text-rgb),0.65); margin: 0 0 44px; max-width: 560px;">Simple, from listing to a buyer messaging you directly.</p>
   <div id="howGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-    <div style="background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 26px 22px;">
-      <div style="width: 36px; height: 36px; border-radius: 50%; background: #0F4C4C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">1</div>
+    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">1</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Submit your items</div>
-      <div style="font-size: 14px; line-height: 1.5; color: rgba(15,76,76,0.65);">Add photos, a description, price and where it can be collected.</div>
+      <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">Add photos, a description, price and where it can be collected.</div>
     </div>
-    <div style="background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 26px 22px;">
-      <div style="width: 36px; height: 36px; border-radius: 50%; background: #0F4C4C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">2</div>
+    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">2</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Pay the listing fee</div>
-      <div style="font-size: 14px; line-height: 1.5; color: rgba(15,76,76,0.65);">A small flat fee covers admin review and posting to social.</div>
+      <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">A small flat fee covers admin review and posting to social.</div>
     </div>
-    <div style="background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 26px 22px;">
-      <div style="width: 36px; height: 36px; border-radius: 50%; background: #0F4C4C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">3</div>
+    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">3</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">We post it live</div>
-      <div style="font-size: 14px; line-height: 1.5; color: rgba(15,76,76,0.65);">Once approved, your item goes up on Instagram, TikTok and Facebook.</div>
+      <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">Once approved, your item goes up on Instagram, TikTok and Facebook.</div>
     </div>
-    <div style="background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 26px 22px;">
-      <div style="width: 36px; height: 36px; border-radius: 50%; background: #0F4C4C; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">4</div>
+    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+      <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">4</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Buyers reach out to you</div>
-      <div style="font-size: 14px; line-height: 1.5; color: rgba(15,76,76,0.65);">Interested buyers message you directly to agree on price, pickup and payment.</div>
+      <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">Interested buyers message you directly to agree on price, pickup and payment.</div>
     </div>
   </div>
 </div>
@@ -251,8 +260,8 @@
 <!-- Pricing -->
 <div id="pricing" class="wrap">
   <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 10px; letter-spacing: -0.01em;">Pricing</h2>
-  <p style="font-size: 16px; color: rgba(15,76,76,0.65); margin: 0 0 4px; max-width: 560px;">Instant self-serve listings, or book a service and we'll follow up.</p>
-  <p style="font-size: 12px; color: rgba(15,76,76,0.45); margin: 0 0 32px;">All prices in KES</p>
+  <p style="font-size: 16px; color: rgba(var(--color-text-rgb),0.65); margin: 0 0 4px; max-width: 560px;">Instant self-serve listings, or book a service and we'll follow up.</p>
+  <p style="font-size: 12px; color: rgba(var(--color-text-rgb),0.45); margin: 0 0 32px;">All prices in KES</p>
 
   <div style="display: flex; gap: 10px; margin-bottom: 32px; flex-wrap: wrap;">
     <button class="tabbtn" data-tab="item" style="padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="selectTab('item')">List an item</button>
@@ -261,43 +270,43 @@
   </div>
 
   <div id="tab-item" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">1 item</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">400</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Perfect for a single piece — a chair, a lamp, a bag.</div></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">2 items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Two listings in one submission.</div></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">3+ items</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">+300 each</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">KES 300 per extra item beyond 2.</div></div>
-    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sets</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Covers a sofa, dining set, cosmetics or any other set — one fee for the lot.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">1 item</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">400</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Perfect for a single piece — a chair, a lamp, a bag.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">2 items</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Two listings in one submission.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">3+ items</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">+300 each</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">KES 300 per extra item beyond 2.</div></div>
+    <div class="tier-card"><div style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">Sets</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">700</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Covers a sofa, dining set, cosmetics or any other set — one fee for the lot.</div></div>
   </div>
   <button id="tabCta-item" class="btn-solid-teal" onclick="goSell()" style="margin-top: 24px;">List Now</button>
 
   <div id="tab-category" class="tab-hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">2,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Get in front of buyers actively hunting for their next ride.</div></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Motorbike</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">1,300</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Quick to list, quick to move — bikes turn around fast on our socials.</div></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Business</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">3,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A discreet listing for a business that's for sale — reaches serious buyers, not window shoppers.</div></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Property</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">4,500</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">For land or a house to rent — full details and real photos to attract genuine inquiries.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">2,500</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Get in front of buyers actively hunting for their next ride.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Motorbike</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">1,300</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Quick to list, quick to move — bikes turn around fast on our socials.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Business</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">3,000</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A discreet listing for a business that's for sale — reaches serious buyers, not window shoppers.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Property</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">4,500</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">For land or a house to rent — full details and real photos to attract genuine inquiries.</div></div>
   </div>
   <button id="tabCta-category" class="btn-solid-teal" onclick="goSell()" style="margin-top: 24px;">List Now</button>
 
   <div id="tab-service" class="tab-hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Viewing & Inspecting</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Our team visits, photographs, and posts the item for you — a done-for-you listing service.</div></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Home Organization</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We come organize a room, wardrobe, or space in person.</div></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car Inspection</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">20,000</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A qualified mechanic thoroughly inspects a car before you buy.</div></div>
-    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Digital Marketing</div><div style="font-size: 32px; font-weight: 800; color: #E2664D; margin-bottom: 10px;">800/day</div><div style="font-size: 14px; color: rgba(15,76,76,0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We run paid ads for your business on Meta.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Viewing & Inspecting</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">Our team visits, photographs, and posts the item for you — a done-for-you listing service.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Home Organization</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">Custom quote</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We come organize a room, wardrobe, or space in person.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Car Inspection</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">20,000</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">A qualified mechanic thoroughly inspects a car before you buy.</div></div>
+    <div class="tier-card"><div style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Digital Marketing</div><div style="font-size: 32px; font-weight: 800; color: var(--color-brand); margin-bottom: 10px;">800/day</div><div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); line-height: 1.5; margin-bottom: 18px; flex: 1;">We run paid ads for your business on Meta.</div></div>
   </div>
   <button id="tabCta-service" class="btn-solid-teal" onclick="openServiceModal('Book a service')" style="margin-top: 24px;">Make a Request</button>
 </div>
 
 <!-- Escrow -->
 <div id="escrow" class="wrap">
-  <div id="escrowGrid" style="background: #fff; border: 1px solid rgba(15,76,76,0.1); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center;">
+  <div id="escrowGrid" style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.1); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center;">
     <div>
-      <div style="display: inline-block; background: rgba(20,184,166,0.12); color: #0F4C4C; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;">Buy and sell with confidence</div>
+      <div style="display: inline-block; background: rgba(var(--color-brand-rgb),0.12); color: var(--color-text); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;">Buy and sell with confidence</div>
       <h2 style="font-size: 30px; font-weight: 800; margin: 0 0 14px; letter-spacing: -0.01em;">Escrow</h2>
-      <p style="font-size: 16px; line-height: 1.6; color: rgba(15,76,76,0.7); margin: 0 0 20px; max-width: 480px;">We hold the buyer's payment until you confirm the handoff — so neither side has to trust a stranger with money upfront.</p>
+      <p style="font-size: 16px; line-height: 1.6; color: rgba(var(--color-text-rgb),0.7); margin: 0 0 20px; max-width: 480px;">We hold the buyer's payment until you confirm the handoff — so neither side has to trust a stranger with money upfront.</p>
       <ul style="margin: 0 0 24px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px;">
-        <li style="font-size: 14px; display: flex; align-items: center; gap: 10px;"><span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</span>Buyer's funds are secured before handoff</li>
-        <li style="font-size: 14px; display: flex; align-items: center; gap: 10px;"><span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</span>Seller only gets paid once the item is confirmed received</li>
-        <li style="font-size: 14px; display: flex; align-items: center; gap: 10px;"><span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</span>Works for high-value items, vehicles and property</li>
+        <li style="font-size: 14px; display: flex; align-items: center; gap: 10px;"><span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(var(--color-brand-rgb),0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</span>Buyer's funds are secured before handoff</li>
+        <li style="font-size: 14px; display: flex; align-items: center; gap: 10px;"><span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(var(--color-brand-rgb),0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</span>Seller only gets paid once the item is confirmed received</li>
+        <li style="font-size: 14px; display: flex; align-items: center; gap: 10px;"><span style="width: 20px; height: 20px; border-radius: 50%; background: rgba(var(--color-brand-rgb),0.15); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</span>Works for high-value items, vehicles and property</li>
       </ul>
-      <div style="font-size: 28px; font-weight: 800; color: #E2664D;">KES 2,000 <span style="font-size: 14px; font-weight: 600; color: rgba(15,76,76,0.5);">per transaction</span></div>
+      <div style="font-size: 28px; font-weight: 800; color: var(--color-brand);">KES 2,000 <span style="font-size: 14px; font-weight: 600; color: rgba(var(--color-text-rgb),0.5);">per transaction</span></div>
     </div>
     <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px;">
       <button class="btn-outline-teal" style="padding: 14px 26px; font-size: 15px;" onclick="openServiceModal('Escrow')">Make a Request</button>
@@ -306,31 +315,31 @@
 </div>
 
 <!-- CTA banner -->
-<div style="background: #0F4C4C; padding: 64px 28px;">
+<div style="background: var(--color-brand); padding: 64px 28px;">
   <div id="ctaRow" style="max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
     <div>
       <div style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 8px;">Got something to sell, or a job to hand off?</div>
       <div style="font-size: 15px; color: rgba(255,255,255,0.7);">Listing takes just a few minutes. Services are booked in a couple of clicks.</div>
     </div>
-    <button onclick="goSell()" style="background: #14B8A6; color: #0F4C4C; border: none; padding: 16px 30px; border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#14B8A6'">List something →</button>
+    <button onclick="goSell()" style="background: var(--color-brand); color: var(--color-text); border: none; padding: 16px 30px; border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--color-brand)'">List something →</button>
   </div>
 </div>
 
 <!-- Footer -->
 <div id="siteFooter" style="padding: 40px 28px; max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
   <img src="logo.png" alt="Own Again" style="height: 20px; display: block;">
-  <span style="font-size: 13px; color: rgba(15,76,76,0.5);">hello@ownagain.co.ke</span>
+  <span style="font-size: 13px; color: rgba(var(--color-text-rgb),0.5);">hello@ownagain.co.ke</span>
 </div>
 
 <!-- Service request modal -->
-<div id="modalBackdrop" style="display: none; position: fixed; inset: 0; background: rgba(15,76,76,0.45); align-items: center; justify-content: center; z-index: 50; padding: 20px;" onclick="closeServiceModal(event)">
-  <div style="background: #fff; border-radius: 18px; padding: 28px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(15,76,76,0.3);" onclick="event.stopPropagation()">
+<div id="modalBackdrop" style="display: none; position: fixed; inset: 0; background: rgba(var(--color-text-rgb),0.45); align-items: center; justify-content: center; z-index: 50; padding: 20px;" onclick="closeServiceModal(event)">
+  <div style="background: #fff; border-radius: 18px; padding: 28px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(var(--color-text-rgb),0.3);" onclick="event.stopPropagation()">
     <div id="reqFormView">
       <div style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">Make a Request</div>
-      <div style="font-size: 14px; color: rgba(15,76,76,0.6); margin-bottom: 22px;">We'll reach out to confirm details.</div>
+      <div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); margin-bottom: 22px;">We'll reach out to confirm details.</div>
 
-      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Service</label>
-      <select id="reqService" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(15,76,76,0.18); font-size: 15px; margin-bottom: 14px; color: #0F4C4C; font-family: inherit; background: #fff;">
+      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(var(--color-text-rgb),0.75); margin-bottom: 6px;">Service</label>
+      <select id="reqService" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--color-text-rgb),0.18); font-size: 15px; margin-bottom: 14px; color: var(--color-text); font-family: inherit; background: #fff;">
         <option value="" disabled>Select a service</option>
         <option value="Viewing &amp; Inspecting">Viewing &amp; Inspecting</option>
         <option value="Home Organization">Home Organization</option>
@@ -338,25 +347,25 @@
         <option value="Digital Marketing">Digital Marketing</option>
         <option value="Escrow">Escrow</option>
       </select>
-      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Name</label>
-      <input id="reqName" placeholder="Your name" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(15,76,76,0.18); font-size: 15px; margin-bottom: 14px; color: #0F4C4C;">
-      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Phone number</label>
-      <input id="reqPhone" placeholder="0712345678" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(15,76,76,0.18); font-size: 15px; margin-bottom: 14px; color: #0F4C4C;">
-      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(15,76,76,0.75); margin-bottom: 6px;">Notes (optional)</label>
-      <textarea id="reqNotes" placeholder="Anything we should know?" rows="3" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(15,76,76,0.18); font-size: 15px; margin-bottom: 20px; color: #0F4C4C; font-family: inherit; resize: vertical;"></textarea>
+      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(var(--color-text-rgb),0.75); margin-bottom: 6px;">Name</label>
+      <input id="reqName" placeholder="Your name" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--color-text-rgb),0.18); font-size: 15px; margin-bottom: 14px; color: var(--color-text);">
+      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(var(--color-text-rgb),0.75); margin-bottom: 6px;">Phone number</label>
+      <input id="reqPhone" placeholder="0712345678" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--color-text-rgb),0.18); font-size: 15px; margin-bottom: 14px; color: var(--color-text);">
+      <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(var(--color-text-rgb),0.75); margin-bottom: 6px;">Notes (optional)</label>
+      <textarea id="reqNotes" placeholder="Anything we should know?" rows="3" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--color-text-rgb),0.18); font-size: 15px; margin-bottom: 20px; color: var(--color-text); font-family: inherit; resize: vertical;"></textarea>
 
       <div id="reqError" style="display: none; font-size: 13px; font-weight: 600; color: #B91C1C; background: #FEF2F2; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;">Something went wrong — please try again.</div>
 
       <div style="display: flex; gap: 10px;">
-        <button style="flex: 1; background: none; border: 1px solid rgba(15,76,76,0.2); color: #0F4C4C; padding: 13px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="closeServiceModal()">Cancel</button>
-        <button id="submitBtn" style="flex: 1; background: #14B8A6; border: none; color: #fff; padding: 13px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onmouseover="this.style.background='#0F4C4C'" onmouseout="this.style.background='#14B8A6'" onclick="submitServiceRequest()">Submit</button>
+        <button style="flex: 1; background: none; border: 1px solid rgba(var(--color-text-rgb),0.2); color: var(--color-text); padding: 13px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onclick="closeServiceModal()">Cancel</button>
+        <button id="submitBtn" style="flex: 1; background: var(--color-brand); border: none; color: #fff; padding: 13px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onmouseover="this.style.background='var(--color-text)'" onmouseout="this.style.background='var(--color-brand)'" onclick="submitServiceRequest()">Submit</button>
       </div>
     </div>
 
     <div id="reqSuccessView" style="display: none; text-align: center; padding: 12px 0;">
       <div style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Thanks, we'll be in touch</div>
-      <div style="font-size: 14px; color: rgba(15,76,76,0.6); margin-bottom: 22px;">We've received your request and will reach out to confirm details.</div>
-      <button style="width: 100%; background: #14B8A6; border: none; color: #fff; padding: 13px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onmouseover="this.style.background='#0F4C4C'" onmouseout="this.style.background='#14B8A6'" onclick="closeServiceModal()">Close</button>
+      <div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); margin-bottom: 22px;">We've received your request and will reach out to confirm details.</div>
+      <button style="width: 100%; background: var(--color-brand); border: none; color: #fff; padding: 13px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;" onmouseover="this.style.background='var(--color-text)'" onmouseout="this.style.background='var(--color-brand)'" onclick="closeServiceModal()">Close</button>
     </div>
   </div>
 </div>
@@ -389,22 +398,22 @@ const offerContainer = document.getElementById('offerCards');
 offerCards.forEach(c => {
   const a = document.createElement('a');
   a.href = '#pricing';
-  a.style.cssText = 'text-decoration: none; color: inherit; background: #fff; border: 1px solid rgba(15,76,76,0.08); border-radius: 16px; padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer;';
-  a.onmouseover = () => { a.style.borderColor = '#14B8A6'; };
-  a.onmouseout = () => { a.style.borderColor = 'rgba(15,76,76,0.08)'; };
+  a.style.cssText = 'text-decoration: none; color: inherit; background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer;';
+  a.onmouseover = () => { a.style.borderColor = 'var(--color-brand)'; };
+  a.onmouseout = () => { a.style.borderColor = 'rgba(var(--color-text-rgb),0.08)'; };
   a.onclick = () => selectTab(c.tab);
-  a.innerHTML = `<div style="width:128px;height:128px;border-radius:22px;background:rgba(20,184,166,0.12);background-image:url(${c.icon});background-size:187px 187px;background-position:center;background-repeat:no-repeat;"></div>
+  a.innerHTML = `<div style="width:128px;height:128px;border-radius:22px;background:rgba(var(--color-brand-rgb),0.12);background-image:url(${c.icon});background-size:187px 187px;background-position:center;background-repeat:no-repeat;"></div>
     <div style="font-size:14px;font-weight:700;line-height:1.3;">${c.label}</div>
-    <div style="font-size:13px;color:rgba(15,76,76,0.6);line-height:1.4;">${c.desc}</div>`;
+    <div style="font-size:13px;color:rgba(var(--color-text-rgb),0.6);line-height:1.4;">${c.desc}</div>`;
   offerContainer.appendChild(a);
 });
 
 function styleTabButtons(active) {
   document.querySelectorAll('.tabbtn').forEach(btn => {
     const isActive = btn.dataset.tab === active;
-    btn.style.background = isActive ? '#0F4C4C' : '#fff';
-    btn.style.color = isActive ? '#fff' : '#0F4C4C';
-    btn.style.border = isActive ? '2px solid #0F4C4C' : '2px solid rgba(15,76,76,0.15)';
+    btn.style.background = isActive ? 'var(--color-brand)' : '#fff';
+    btn.style.color = isActive ? '#fff' : 'var(--color-text)';
+    btn.style.border = isActive ? '2px solid var(--color-brand)' : '2px solid rgba(var(--color-text-rgb),0.15)';
   });
 }
 function showTab(tab) {
