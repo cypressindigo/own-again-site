@@ -23,6 +23,19 @@
   .btn-solid-teal:hover { background: var(--color-brand); }
   .btn-outline-teal { background: none; color: var(--color-brand); border: 2px solid var(--color-brand); padding: 10px 22px; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; }
   .btn-outline-teal:hover { background: var(--color-brand); color: #fff; }
+  /* Bottom CTA button: inverts on hover/keyboard-focus. Colors live here (not
+     inline) so the :hover / :focus-visible rules aren't beaten by inline
+     specificity; size/shape stay inline on the button itself. */
+  .btn-cta-invert { background: var(--color-bg); color: var(--color-text); transition: background 180ms ease, color 180ms ease; }
+  .btn-cta-invert:hover, .btn-cta-invert:focus-visible { background: var(--color-text); color: var(--color-bg); }
+  /* Mobile: remove the default gray tap-highlight flash on every tappable
+     element (covers the pill buttons and the JS onmouseover/onmouseout ones
+     alike). This only suppresses the touch-highlight — keyboard
+     :focus-visible outlines are a separate property and stay intact. */
+  button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
+  /* Since that removes all tap feedback, give the buttons a subtle physical
+     "press" on tap so they still feel responsive — no new color or shadow. */
+  button:active { transform: scale(0.97); opacity: 0.9; }
   .tier-card { background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
   .tab-hidden { display: none; }
 
@@ -321,7 +334,7 @@
       <div style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 8px;">Got something to sell, or a job to hand off?</div>
       <div style="font-size: 15px; color: rgba(255,255,255,0.7);">Listing takes just a few minutes. Services are booked in a couple of clicks.</div>
     </div>
-    <button onclick="goSell()" style="background: var(--color-brand); color: var(--color-text); border: none; padding: 16px 30px; border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer; white-space: nowrap;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--color-brand)'">List something →</button>
+    <button onclick="goSell()" class="btn-cta-invert" style="border: none; padding: 16px 30px; border-radius: 999px; font-size: 16px; font-weight: 700; cursor: pointer; white-space: nowrap;">List something →</button>
   </div>
 </div>
 
