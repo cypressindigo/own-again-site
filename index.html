@@ -13,6 +13,8 @@
     --color-text-rgb: 59, 42, 31;    /* Espresso channels, for rgba(var(--color-text-rgb), X) */
     --color-brand-rgb: 164, 124, 91; /* Nude Brown channels, for rgba(var(--color-brand-rgb), X) */
     --color-bg-rgb: 243, 235, 221;   /* Oat channels, for the translucent sticky header */
+    --color-surface: #FFFBF5;        /* warm off-white — card/panel surfaces (replaces raw #fff) */
+    --color-border-rgb: 217, 194, 166; /* Sand channels, for rgba(var(--color-border-rgb), X) card borders */
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--color-bg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: var(--color-text); }
@@ -36,7 +38,7 @@
   /* Since that removes all tap feedback, give the buttons a subtle physical
      "press" on tap so they still feel responsive — no new color or shadow. */
   button:active { transform: scale(0.97); opacity: 0.9; }
-  .tier-card { background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.1); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
+  .tier-card { background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.5); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; }
   .tab-hidden { display: none; }
 
   /* One consolidated CTA per pricing tab (desktop and mobile alike, replacing
@@ -247,22 +249,22 @@
   <h2 style="font-size: 32px; font-weight: 800; margin: 0 0 10px; letter-spacing: -0.01em;">How it works</h2>
   <p style="font-size: 16px; color: rgba(var(--color-text-rgb),0.65); margin: 0 0 44px; max-width: 560px;">Simple, from listing to a buyer messaging you directly.</p>
   <div id="howGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+    <div style="background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.45); border-radius: 16px; padding: 26px 22px;">
       <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">1</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Submit your items</div>
       <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">Add photos, a description, price and where it can be collected.</div>
     </div>
-    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+    <div style="background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.45); border-radius: 16px; padding: 26px 22px;">
       <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">2</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Pay the listing fee</div>
       <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">A small flat fee covers admin review and posting to social.</div>
     </div>
-    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+    <div style="background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.45); border-radius: 16px; padding: 26px 22px;">
       <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">3</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">We post it live</div>
       <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">Once approved, your item goes up on Instagram, TikTok and Facebook.</div>
     </div>
-    <div style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 26px 22px;">
+    <div style="background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.45); border-radius: 16px; padding: 26px 22px;">
       <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--color-brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 16px;">4</div>
       <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Buyers reach out to you</div>
       <div style="font-size: 14px; line-height: 1.5; color: rgba(var(--color-text-rgb),0.65);">Interested buyers message you directly to agree on price, pickup and payment.</div>
@@ -309,7 +311,7 @@
 
 <!-- Escrow -->
 <div id="escrow" class="wrap">
-  <div id="escrowGrid" style="background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.1); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center;">
+  <div id="escrowGrid" style="background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.5); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 40px; align-items: center;">
     <div>
       <div style="display: inline-block; background: rgba(var(--color-brand-rgb),0.12); color: var(--color-text); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;">Buy and sell with confidence</div>
       <h2 style="font-size: 30px; font-weight: 800; margin: 0 0 14px; letter-spacing: -0.01em;">Escrow</h2>
@@ -352,7 +354,7 @@
       <div style="font-size: 14px; color: rgba(var(--color-text-rgb),0.6); margin-bottom: 22px;">We'll reach out to confirm details.</div>
 
       <label style="display: block; font-size: 13px; font-weight: 600; color: rgba(var(--color-text-rgb),0.75); margin-bottom: 6px;">Service</label>
-      <select id="reqService" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--color-text-rgb),0.18); font-size: 15px; margin-bottom: 14px; color: var(--color-text); font-family: inherit; background: #fff;">
+      <select id="reqService" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(var(--color-border-rgb),0.5); font-size: 15px; margin-bottom: 14px; color: var(--color-text); font-family: inherit; background: var(--color-surface);">
         <option value="" disabled>Select a service</option>
         <option value="Viewing &amp; Inspecting">Viewing &amp; Inspecting</option>
         <option value="Home Organization">Home Organization</option>
@@ -411,7 +413,7 @@ const offerContainer = document.getElementById('offerCards');
 offerCards.forEach(c => {
   const a = document.createElement('a');
   a.href = '#pricing';
-  a.style.cssText = 'text-decoration: none; color: inherit; background: #fff; border: 1px solid rgba(var(--color-text-rgb),0.08); border-radius: 16px; padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer;';
+  a.style.cssText = 'text-decoration: none; color: inherit; background: var(--color-surface); border: 1px solid rgba(var(--color-border-rgb),0.45); border-radius: 16px; padding: 24px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer;';
   a.onmouseover = () => { a.style.borderColor = 'var(--color-brand)'; };
   a.onmouseout = () => { a.style.borderColor = 'rgba(var(--color-text-rgb),0.08)'; };
   a.onclick = () => selectTab(c.tab);
@@ -424,9 +426,9 @@ offerCards.forEach(c => {
 function styleTabButtons(active) {
   document.querySelectorAll('.tabbtn').forEach(btn => {
     const isActive = btn.dataset.tab === active;
-    btn.style.background = isActive ? 'var(--color-brand)' : '#fff';
+    btn.style.background = isActive ? 'var(--color-brand)' : 'var(--color-surface)';
     btn.style.color = isActive ? '#fff' : 'var(--color-text)';
-    btn.style.border = isActive ? '2px solid var(--color-brand)' : '2px solid rgba(var(--color-text-rgb),0.15)';
+    btn.style.border = isActive ? '2px solid var(--color-brand)' : '2px solid rgba(var(--color-border-rgb),0.5)';
   });
 }
 function showTab(tab) {
